@@ -46,3 +46,5 @@ Sending the token in the body.
 
 token=YOURTOKENHERE
 ```
+
+The app will check the token validation and will inform in the respose.
