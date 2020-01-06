@@ -7,14 +7,7 @@ const app = express();
 const port = 8080;
 
 // Session support is required to use ExpressOIDC
-app.use(
-  session({
-    secret: "Some Secret",
-    resave: true,
-    saveUninitialized: false,
-    cookie: { secure: true }
-  })
-);
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true }));
 
 const oidc = new ExpressOIDC({
   issuer: "https://dev-937960.okta.com/oauth2/default", // Your Okta URL
@@ -32,8 +25,10 @@ app.get("/protected", oidc.ensureAuthenticated(), (req, res) => {
 });
 
 app.get("/", (req, res) => {
+  console.log("req", req);
   if (req.userContext && req.userContext.userinfo) {
-    res.send(`Hi ${req.userContext.userinfo.name}! You are logged!`);
+    res.send(`Hi ${req.userContext.userinfo.name}! You are logged! Here is your token => ${req.userContext.tokens.access_token}`);
+
   } else {
     res.send("Hi! You are not logged.");
   }
